@@ -1,0 +1,17 @@
+{
+  "data_prefix": "/data/",
+  "dir_select": [
+    "file_1",
+    "file_2",
+    "file_3",
+    "file_4"
+  ],
+  "input_len": 4096,
+  "materials": [
+      "acrylic",
+      "metal"
+  ],
+  "epoch_num": 75,
+  "batch_num": 128
+}
+
