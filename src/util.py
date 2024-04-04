@@ -39,7 +39,7 @@ def plot_ball(
     plt.show()
 
 
-def plot_voxel(voxelarray, elev=20, azim=10):
+def plot_voxel_c(voxelarray, elev=20, azim=10):
     # C0 -> acrylic
     # C1 -> metal
     colors = ["C0", "C1"]  # Define colors for 1 and 2 values respectively
@@ -47,6 +47,17 @@ def plot_voxel(voxelarray, elev=20, azim=10):
     ax = plt.figure(figsize=(4, 4)).add_subplot(projection="3d")
     # ax.voxels(voxelarray.transpose(1, 0, 2))
     ax.voxels(voxelarray.transpose(1, 0, 2), facecolors=colors[np.max(voxelarray) - 1])
+    ax.set_xlabel("x")
+    ax.set_ylabel("y")
+    ax.set_zlabel("z")
+    ax.view_init(azim=azim, elev=elev)
+    plt.tight_layout()
+    plt.show()
+
+
+def plot_voxel(voxelarray, elev=20, azim=10):
+    ax = plt.figure(figsize=(4, 4)).add_subplot(projection="3d")
+    ax.voxels(voxelarray.transpose(1, 0, 2))
     ax.set_xlabel("x")
     ax.set_ylabel("y")
     ax.set_zlabel("z")

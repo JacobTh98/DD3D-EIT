@@ -1,5 +1,5 @@
 {
-  "data_prefix": "/data/",
+  "data_prefix": "/measurements/",
   "dir_select": [
     "file_1",
     "file_2",
