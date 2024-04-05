@@ -7,7 +7,7 @@ from tensorflow.keras.optimizers import Adam
 from src.vae import vae_model
 
 boundary = Boundary()
-ball = BallAnomaly(x=1,y=1,z=1,r=5,γ=1)
+ball = BallAnomaly(x=1, y=1, z=1, r=5, γ=1)
 
 X_all_anomalys = list()
 radius_labels = list()

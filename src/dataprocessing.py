@@ -3,7 +3,7 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib import ticker
-from .classes import TankProperties32x2, BallAnomaly, CSVConvertInfo # PyEIT3DMesh
+from .classes import TankProperties32x2, BallAnomaly, CSVConvertInfo  # PyEIT3DMesh
 import csv
 from sciopy.sciopy_dataclasses import ScioSpecMeasurementSetup, SingleFrame
 import shutil
@@ -98,7 +98,7 @@ def temperature_history(
     return temp_hist
 
 
-def get_mesh(tmp: np.lib.npyio.NpzFile): # -> PyEIT3DMesh:
+def get_mesh(tmp: np.lib.npyio.NpzFile):  # -> PyEIT3DMesh:
     """
     Load the mesh of a single .npz file.
 
