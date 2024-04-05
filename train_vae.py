@@ -31,7 +31,7 @@ X_train, X_test, r_train, r_test = train_test_split(
     X_all_anomalys, radius_labels, train_size=0.95
 )
 
-np.savez("models/testdata_vae.npz", X_test=X_test, r_test=r_test)
+np.savez("models/vae_testdata.npz", X_test=X_test, r_test=r_test)
 
 print(X_all_anomalys.shape, radius_labels.shape)
 
