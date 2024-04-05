@@ -55,4 +55,4 @@ history = vae.fit(
     # callbacks=[cb],
 )
 
-vae.save_weights("models/vae.weights.h5")
+vae.save_weights("../models/vae.weights.h5")
