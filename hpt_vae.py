@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from src.classes import BallAnomaly, Boundary
 from src.util import voxel_ball
-
+import os
 from tensorflow.keras.optimizers import Adam
 from src.vae import vae_model
 
@@ -13,9 +13,9 @@ X_all_anomalys = list()
 radius_labels = list()
 
 ###
-print("--------------------------------")
-print("Hyperparametertuning for the VAE")
-print("--------------------------------\n\n")
+print("\n\n\t+----------------------------------+")
+print("\t| Hyperparametertuning for the VAE |")
+print("\t+----------------------------------+\n\n")
 print("generate data")
 
 γ = 1  # set object geometries to 1 and empty space to 0
@@ -40,15 +40,15 @@ hyperparameters = {
     "beta_s": np.linspace(0, 2, 11),
     "batch_s": [50, 100, 150, 200, 250, 300, 350, 400],
     "epoch_s": [10, 50, 100, 150, 200, 250],
-    "savepath": "models/vae_hpt_1/",
+    "savepath": "../models/vae_hpt_1/",
 }
 
-np.savez(f"{hyperparameters['savepath']}vae_testdata.npz", X_test=X_test, r_test=r_test)
+#try:
+os.mkdir(hyperparameters["savepath"])
+#except BaseException:
+#    print("[Errno 17] File exists")
 
-try:
-    os.mkdir(hyperparameters["savepath"])
-except BaseException:
-    print("[Errno 17] File exists")
+np.savez(f"{hyperparameters['savepath']}vae_testdata.npz", X_test=X_test, r_test=r_test)
 
 for epoch in hyperparameters["epoch_s"]:
     for batch in hyperparameters["batch_s"]:
