@@ -25,9 +25,13 @@ def compute_voxel_err(predicted_voxels, true_voxels):
     return np.array(com_true) - np.array(com_pred)
 
 
-
-
-def visualize_errors(errors, in_percent=True, voxel_val_max=32, save=False, s_path = "images/reconstruction_axis_error.pdf"):
+def visualize_errors(
+    errors,
+    in_percent=True,
+    voxel_val_max=32,
+    save=False,
+    s_path="images/reconstruction_axis_error.pdf",
+):
     if in_percent:
         errors = errors / voxel_val_max * 100
     data = {"x-pos": errors[:, 0], "y-pos": errors[:, 1], "z-pos": errors[:, 2]}
