@@ -43,9 +43,9 @@ hyperparameters = {
     "savepath": "../models/vae_hpt_1/",
 }
 
-#try:
+# try:
 os.mkdir(hyperparameters["savepath"])
-#except BaseException:
+# except BaseException:
 #    print("[Errno 17] File exists")
 
 np.savez(f"{hyperparameters['savepath']}vae_testdata.npz", X_test=X_test, r_test=r_test)

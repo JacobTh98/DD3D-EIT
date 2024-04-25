@@ -1,6 +1,14 @@
 from .dataprocessing import get_measured_potential
 import numpy as np
 from tensorflow.keras.utils import Sequence
+from tqdm import tqdm
+import os
+
+
+def z_score(X):
+    X_mean = np.mean(X)
+    X_std = np.std(X)
+    return (X - X_mean) / X_std
 
 
 class DataGenerator(Sequence):
@@ -13,6 +21,7 @@ class DataGenerator(Sequence):
         eit_dim=4096,
         supervised="diameter",
         shuffle=True,
+        EIT_shape="vector",
     ):
         "Initialization"
         self.path = path
@@ -22,6 +31,7 @@ class DataGenerator(Sequence):
         self.batch_size = batch_size
         self.list_IDs = list_IDs
         self.shuffle = shuffle
+        self.EIT_shape = EIT_shape
         self.on_epoch_end()
         self.n = 0
         self.max = self.__len__()
@@ -53,7 +63,11 @@ class DataGenerator(Sequence):
     def __data_generation(self, list_IDs_temp):
         "Generates data containing batch_size samples"  # X : (n_samples, *eit_dim)
         # Initialization
-        X = np.empty((self.batch_size, 64, 64, 1))  # EIT signal, self.eit_dim
+        if self.EIT_shape == "vector":
+            X = np.empty((self.batch_size, self.eit_dim, 1))  # EIT signal, self.eit_dim
+        elif self.EIT_shape == "matrix":
+            X = np.empty((self.batch_size, 64, 64, 1))  # EIT signal, self.eit_dim
+
         y = np.empty((self.batch_size, 1))
 
         # Generate data
@@ -63,29 +77,73 @@ class DataGenerator(Sequence):
                 "{0:s}/sample_{1:06d}.npz".format(self.path, ID), allow_pickle=True
             )
             anomaly = tmp["anomaly"].tolist()
-            raw_eit = get_measured_potential(tmp, shape_type="matrix")
-            # raw_eit = get_measured_potential(tmp, shape_type="vector")
+            raw_eit = get_measured_potential(tmp, shape_type=self.EIT_shape)
+
             mean_eit = np.load(
                 f"{self.mean_path}mean_gnd_d_{anomaly.d}_{anomaly.material}.npy",
                 allow_pickle=True,
             )
-            pot = np.abs(raw_eit - np.reshape(mean_eit, (64, 64)))
-            # pot = np.abs(raw_eit - mean_eit) # vector eit data shape
-            X[
-                i,
-            ] = np.expand_dims(pot, axis=2)
-            # X[
-            #    i,
-            # ] = np.expand_dims(pot, axis=1)
+            if self.EIT_shape == "vector":
+                pot = np.abs(raw_eit - mean_eit)
+                X[
+                    i,
+                ] = np.expand_dims(pot, axis=1)
+
+            elif self.EIT_shape == "matrix":
+                pot = np.abs(raw_eit - np.reshape(mean_eit, (64, 64)))
+
+                X[
+                    i,
+                ] = np.expand_dims(pot, axis=2)
+
             if self.supervised == "diameter":
                 y[
                     i,
                 ] = anomaly.d
             elif self.supervised == "material":
-                mat_dict = {"acryl": 0, "messing": 1}
+                mat_dict = {"acryl": 0, "brass": 1}
                 y[
                     i,
                 ] = mat_dict[anomaly.material]
 
             # add normalization?
         return X, y
+
+
+def DataLoader(params: dict, n_earlystop=None):
+    """
+    Set "n_earlystop" to a integer to load data until sample number.
+
+    """
+    X = list()
+    Y = list()
+
+    samples_range = len(os.listdir(params["path"]))
+    if n_earlystop:
+        samples_range = n_earlystop
+
+    for i in tqdm(range(samples_range)):
+        tmp = np.load(
+            "{0:s}/sample_{1:06d}.npz".format(params["path"], i), allow_pickle=True
+        )
+        anomaly = tmp["anomaly"].tolist()
+        raw_eit = get_measured_potential(tmp, shape_type=params["EIT_shape"])
+
+        mean_eit = np.load(
+            f"{params['mean_path']}mean_gnd_d_{anomaly.d}_{anomaly.material}.npy",
+            allow_pickle=True,
+        )
+        if params["EIT_shape"] == "vector":
+            pot = np.abs(raw_eit - mean_eit)
+            X.append(pot)
+        elif params["EIT_shape"] == "matrix":
+            pot = np.abs(raw_eit - np.reshape(mean_eit, (64, 64)))
+            X.append(pot)
+        if params["supervised"] == "diameter":
+            Y.append(anomaly.d)
+        elif params["supervised"] == "material":
+            mat_dict = {"acryl": 0, "brass": 1}
+            Y.append(mat_dict[anomaly.material])
+    X = np.array(X)
+    Y = np.array(Y)
+    return X, Y
