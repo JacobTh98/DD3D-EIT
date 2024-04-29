@@ -49,7 +49,7 @@ def plot_voxel_c(voxelarray, elev=20, azim=10):
 
     ax = plt.figure(figsize=(4, 4)).add_subplot(projection="3d")
     # ax.voxels(voxelarray.transpose(1, 0, 2))
-    ax.voxels(voxelarray.transpose(1, 0, 2), facecolors=colors[np.max(voxelarray) - 1])
+    ax.voxels(voxelarray.transpose(1, 0, 2), facecolors=colors[int(np.max(voxelarray) - 1)])
     ax.set_xlabel("x")
     ax.set_ylabel("y")
     ax.set_zlabel("z")
