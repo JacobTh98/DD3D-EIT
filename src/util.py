@@ -17,9 +17,9 @@ def plot_ball(
     u = np.linspace(0, 2 * np.pi, res)
     v = np.linspace(0, np.pi, res)
 
-    x_c = ball.x + ball.r * np.outer(np.cos(u), np.sin(v))
-    y_c = ball.y + ball.r * np.outer(np.sin(u), np.sin(v))
-    z_c = ball.z + ball.r * np.outer(np.ones(np.size(u)), np.cos(v))
+    x_c = ball.x + ball.d / 2 * np.outer(np.cos(u), np.sin(v))
+    y_c = ball.y + ball.d / 2 * np.outer(np.sin(u), np.sin(v))
+    z_c = ball.z + ball.d / 2 * np.outer(np.ones(np.size(u)), np.cos(v))
 
     fig = plt.figure(figsize=(4, 4))
     ax = fig.add_subplot(111, projection="3d")
@@ -49,7 +49,9 @@ def plot_voxel_c(voxelarray, elev=20, azim=10):
 
     ax = plt.figure(figsize=(4, 4)).add_subplot(projection="3d")
     # ax.voxels(voxelarray.transpose(1, 0, 2))
-    ax.voxels(voxelarray.transpose(1, 0, 2), facecolors=colors[int(np.max(voxelarray) - 1)])
+    ax.voxels(
+        voxelarray.transpose(1, 0, 2), facecolors=colors[int(np.max(voxelarray) - 1)]
+    )
     ax.set_xlabel("x")
     ax.set_ylabel("y")
     ax.set_zlabel("z")
@@ -71,32 +73,13 @@ def plot_voxel(voxelarray, fc=0, elev=20, azim=10):
 
 def voxel_ball(ball, boundary, empty_gnd=0, mask=False):
     y, x, z = np.indices((boundary.x_length, boundary.y_length, boundary.z_length))
-    voxel = np.sqrt((x - ball.x) ** 2 + (y - ball.y) ** 2 + (z - ball.z) ** 2) < ball.r
+    voxel = (
+        np.sqrt((x - ball.x) ** 2 + (y - ball.y) ** 2 + (z - ball.z) ** 2) < ball.d / 2
+    )
     if mask:
         return voxel
     else:
         return np.where(voxel, ball.γ, empty_gnd)
-
-
-def scale_realworld_to_intdomain(coordinate, hitbox, new_min=0, new_max=32, d=3):
-    y_r, x_r, z_r = coordinate
-    new_min += d
-    new_max -= d
-    # set minus x,y to origin
-    y_r += hitbox.y_max
-    x_r += hitbox.x_max
-
-    scaled_value_y = ((y_r) / (hitbox.y_max * 2)) * (new_max - new_min) + new_min
-    scaled_value_y = int(round(min(max(scaled_value_y, new_min), new_max)))
-
-    scaled_value_x = ((x_r) / (hitbox.x_max * 2)) * (new_max - new_min) + new_min
-    scaled_value_x = int(round(min(max(scaled_value_x, new_min), new_max)))
-
-    scaled_value_z = ((z_r - hitbox.z_min) / (hitbox.z_max - hitbox.z_min)) * (
-        new_max - new_min
-    ) + new_min
-    scaled_value_z = int(round(min(max(scaled_value_z, new_min), new_max)))
-    return scaled_value_y, scaled_value_x, scaled_value_z
 
 
 def read_json_file(file_path):

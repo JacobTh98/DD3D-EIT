@@ -20,8 +20,9 @@ class BallAnomaly:
     x: Union[int, float]
     y: Union[int, float]
     z: Union[int, float]
-    r: Union[int, float]
-    γ: Union[int, float]
+    d: Union[int, float]
+    perm: Union[int, float]
+    material: str
 
 
 @dataclass
@@ -72,3 +73,15 @@ class CSVConvertInfo:
     s_path: str
     s_csv: str
     n_samples: int
+
+
+@dataclass
+class HitBox:
+    r_min: Union[int, float]
+    r_max: Union[int, float]
+    x_min: Union[int, float]
+    x_max: Union[int, float]
+    y_min: Union[int, float]
+    y_max: Union[int, float]
+    z_min: Union[int, float]
+    z_max: Union[int, float]
