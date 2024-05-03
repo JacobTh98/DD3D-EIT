@@ -15,8 +15,8 @@ from tensorflow.keras.layers import (
 )
 from tensorflow.keras.losses import (
     binary_crossentropy,
-    mean_absolute_error,
-    mean_squared_error,
+    # mean_absolute_error,
+    # mean_squared_error,
 )
 
 from tensorflow.keras.metrics import Mean

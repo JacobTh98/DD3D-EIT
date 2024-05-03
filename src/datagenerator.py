@@ -89,26 +89,18 @@ class DataGenerator(Sequence):
             )
             if self.EIT_shape == "vector":
                 pot = np.abs(raw_eit - mean_eit)
-                X[
-                    i,
-                ] = np.expand_dims(pot, axis=1)
+                X[i,] = np.expand_dims(pot, axis=1)
 
             elif self.EIT_shape == "matrix":
                 pot = np.abs(raw_eit - np.reshape(mean_eit, (64, 64)))
 
-                X[
-                    i,
-                ] = np.expand_dims(pot, axis=2)
+                X[i,] = np.expand_dims(pot, axis=2)
 
             if self.supervised == "diameter":
-                y[
-                    i,
-                ] = anomaly.d
+                y[i,] = anomaly.d
             elif self.supervised == "material":
                 mat_dict = {"acryl": 0, "brass": 1}
-                y[
-                    i,
-                ] = mat_dict[anomaly.material]
+                y[i,] = mat_dict[anomaly.material]
 
             # add normalization?
         return X, y
