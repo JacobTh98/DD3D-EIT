@@ -133,14 +133,23 @@ def DataLoader(params: dict, n_earlystop=None):
 
         return scaled_value_x, scaled_value_y, scaled_value_z
 
+    mat_dict = {"acryl": 0, "brass": 1}
+    dia_dict = {"20": 4, "30": 6, "40": 8}
+
     X = list()
     Y = list()
+    if params["supervised"] == "anomaly_and_material":
+        Z = list()
 
-    samples_range = len(os.listdir(params["path"]))
     if n_earlystop:
-        samples_range = n_earlystop
+        index_list = np.arange(n_earlystop)
+    else:
+        index_list = np.arange(len(os.listdir(params["path"])))
 
-    for i in tqdm(range(samples_range)):
+    if params["shuffle"] == True:
+        np.random.shuffle(index_list)
+
+    for i in tqdm(index_list):
         tmp = np.load(
             "{0:s}/sample_{1:06d}.npz".format(params["path"], i), allow_pickle=True
         )
@@ -160,19 +169,30 @@ def DataLoader(params: dict, n_earlystop=None):
         if params["supervised"] == "diameter":
             Y.append(anomaly.d)
         elif params["supervised"] == "material":
-            mat_dict = {"acryl": 0, "brass": 1}
             Y.append(mat_dict[anomaly.material])
 
         elif params["supervised"] == "anomaly":
             anmly = tmp["anomaly"].tolist()
-            dia_dict = {"20": 4, "30": 6, "40": 8}
-
             x_vxl, y_vxl, z_vxl = scale_meas_to_vxls(anmly)
             ball = BallAnomaly_vxl(
                 x=x_vxl, y=y_vxl, z=z_vxl, d=dia_dict[str(anmly.d)], γ=1
             )
             Y.append(voxel_ball(ball, Boundary()))
+        elif params["supervised"] == "anomaly_and_material":
+            anmly = tmp["anomaly"].tolist()
+            x_vxl, y_vxl, z_vxl = scale_meas_to_vxls(anmly)
+            ball = BallAnomaly_vxl(
+                x=x_vxl, y=y_vxl, z=z_vxl, d=dia_dict[str(anmly.d)], γ=1
+            )
+            Y.append(voxel_ball(ball, Boundary()))
+            Z.append(mat_dict[anomaly.material])
 
-    X = np.array(X)
-    Y = np.array(Y)
-    return X, Y
+    if params["supervised"] == "anomaly_and_material":
+        X = np.array(X)
+        Y = np.array(Y)
+        Z = np.array(Z)
+        return X, Y, Z
+    else:
+        X = np.array(X)
+        Y = np.array(Y)
+        return X, Y
