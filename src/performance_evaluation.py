@@ -51,7 +51,10 @@ def compute_volume_error(predicted_voxels, true_voxels, mode="stack"):
         for pred, true in zip(predicted_voxels, true_voxels):
             ele_pred = len(np.where(pred != 0)[0])
             ele_true = len(np.where(true != 0)[0])
-            v_err.append(ele_pred - ele_true)
+            if ele_pred == 0:
+                v_err.append(None)
+            else:
+                v_err.append(ele_pred - ele_true)
         v_err = np.array(v_err)
         return v_err
 
@@ -141,7 +144,22 @@ def compute_position_error(pos_test, X_pred, mode="stack"):
 
     elif mode == "stack":
         p_err = list()
-        for test, v_pred in zip(pos_test, X_pred):
-            p_pred = center_of_mass(v_pred)
-            p_err.append(np.linalg.norm(p_pred - test))
+        if len(pos_test.shape) == 5:
+            # no coordinates, voxels are given
+            pos_test = np.squeeze(gamma_test, axis=4)
+
+            for test, v_pred in zip(pos_test, X_pred):
+                if len(v_pred[v_pred == 0]) == 32**3:
+                    p_err.append(None)
+                else:
+                    p_pred = center_of_mass(v_pred)
+                    p_test = center_of_mass(test)
+                    p_err.append(np.linalg.norm(p_pred - p_test))
+        else:
+            for test, v_pred in zip(pos_test, X_pred):
+                if len(v_pred[v_pred == 0]) == 32**3:
+                    p_err.append(None)
+                else:
+                    p_pred = center_of_mass(v_pred)
+                    p_err.append(np.linalg.norm(p_pred - test))
         return np.array(p_err)
