@@ -1,5 +1,6 @@
 import numpy as np
 import json
+import random
 import matplotlib.pyplot as plt
 from .classes import (
     BallAnomaly,
@@ -80,6 +81,42 @@ def voxel_ball(ball, boundary, empty_gnd=0, mask=False):
         return voxel
     else:
         return np.where(voxel, ball.γ, empty_gnd)
+
+
+def plot_reconstruction_set(true, pred, cols=4, legends=False, save_fig=None):
+    if true.shape != pred.shape:
+        print("true.shape != pred.shape")
+        return
+
+    rows = 2
+    colors = ["C0", "C1"]  # Define colors for 1 and 2 values respectively
+
+    sel = random.sample(range(true.shape[0]), cols)
+    print("Selcted the samples =", sel)
+    fig, axes = plt.subplots(
+        rows, cols, figsize=(14, 5), subplot_kw={"projection": "3d"}
+    )
+    for i in range(rows):
+        for j in range(cols):
+            ax = axes[i, j]
+            voxelarray = true[sel[j]] if i == 0 else pred[sel[j]]
+            ax.voxels(voxelarray, facecolors=colors[int(np.max(voxelarray) - 1)])
+            if legends:
+                ax.set_xlabel("x")
+                ax.set_ylabel("y")
+                ax.set_zlabel("z")
+            else:
+                ax.set_xticklabels([])
+                ax.set_yticklabels([])
+                ax.set_zticklabels([])
+            ax.view_init(azim=45, elev=30)
+    if not legends:
+        print("Row 0 -> true γ distribution")
+        print("Row 1 -> pred γ distribution")
+    # plt.tight_layout()
+    if save_fig is not None:
+        plt.savefig(save_fig, bbox_inches="tight", pad_inches=0)
+    plt.show()
 
 
 def read_json_file(file_path):
