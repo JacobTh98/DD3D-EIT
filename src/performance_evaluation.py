@@ -146,7 +146,7 @@ def compute_position_error(pos_test, X_pred, mode="stack"):
         p_err = list()
         if len(pos_test.shape) == 5:
             # no coordinates, voxels are given
-            pos_test = np.squeeze(gamma_test, axis=4)
+            pos_test = np.squeeze(pos_test, axis=4)
 
             for test, v_pred in zip(pos_test, X_pred):
                 if len(v_pred[v_pred == 0]) == 32**3:
