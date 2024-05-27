@@ -18,8 +18,9 @@ Here, $\mathbf{u}$ represents the EIT data, and $\hat{\gamma}$ is the reconstruc
 
 ## Hyperparametertuning $\beta$-VAE
 
-<img src="images/vae_hpt.png" alt="Last 25 VAE hyperparameter tunings with accuracy history of position and volume error (1.5 whisker rule). The three dashed lines mark the three best VAEs, with model 21 being the best." width="500"/>
-
+<div style="text-align: center;">
+<img src="images/vae_hpt.png" alt="Last 25 VAE hyperparameter tunings with accuracy history of position and volume error (1.5 whisker rule). The three dashed lines mark the three best VAEs, with model 21 being the best." width="600"/>
+</div>
 
 
 ## Hyperparametertuning Mapper $\Xi$
