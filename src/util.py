@@ -83,15 +83,19 @@ def voxel_ball(ball, boundary, empty_gnd=0, mask=False):
         return np.where(voxel, ball.γ, empty_gnd)
 
 
-def plot_reconstruction_set(true, pred, cols=4, legends=False, save_fig=None):
+def plot_reconstruction_set(
+    true, m_true, pred, m_pred, cols=5, legends=False, save_fig=None, forced_sel=None
+):
     if true.shape != pred.shape:
         print("true.shape != pred.shape")
         return
 
     rows = 2
     colors = ["C0", "C1"]  # Define colors for 1 and 2 values respectively
-
-    sel = random.sample(range(true.shape[0]), cols)
+    if forced_sel is None:
+        sel = random.sample(range(true.shape[0]), cols)
+    else:
+        sel = forced_sel
     print("Selcted the samples =", sel)
     fig, axes = plt.subplots(
         rows, cols, figsize=(14, 5), subplot_kw={"projection": "3d"}
@@ -99,7 +103,11 @@ def plot_reconstruction_set(true, pred, cols=4, legends=False, save_fig=None):
     for i in range(rows):
         for j in range(cols):
             ax = axes[i, j]
-            voxelarray = true[sel[j]] if i == 0 else pred[sel[j]]
+            voxelarray = (
+                true[sel[j]] * (1 + m_true[sel[j]])
+                if i == 0
+                else pred[sel[j]] * (1 + m_pred[sel[j]])
+            )
             ax.voxels(voxelarray, facecolors=colors[int(np.max(voxelarray) - 1)])
             if legends:
                 ax.set_xlabel("x")
