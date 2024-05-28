@@ -47,5 +47,5 @@ Five randomly selected EIT measurements were taken from the test data. The test 
 The presented graph provides a proof of concept and shows the feasibility of reconstructing different objects within a phantom tank using a data-driven reconstruction approach.
 
 <div style="text-align: center;">
-<img src="images/predicted_test_data_results.png" alt="" width="600"/>
+<img src="images/predicted_test_data_results.png"/>
 </div>
