@@ -14,9 +14,11 @@ $$
 \Upsilon : \mathbf{u} \mapsto m
 $$
 
-Here, $\mathbf{u}$ represents the EIT data, and $\hat{\gamma}$ is the reconstructed conductivity in the 3D domain by the final reconstruction network architecture."
+Here, $\mathbf{u}$ represents the EIT data, and $\hat{\gamma}$ is the reconstructed conductivity in a three-dimensional domain by the final reconstruction network architecture."
 
 ## Hyperparametertuning $\beta$-VAE
+
+Finally, model iteration 21 was selected (also marked with a green dashed line).
 
 <div style="text-align: center;">
 <img src="images/vae_hpt.png" alt="Last 25 VAE hyperparameter tunings with accuracy history of position and volume error (1.5 whisker rule). The three dashed lines mark the three best VAEs, with model 21 being the best." width="600"/>
@@ -35,5 +37,15 @@ Here, $\mathbf{u}$ represents the EIT data, and $\hat{\gamma}$ is the reconstruc
 | 21      | 5             | 54.65               | -0.10                       | 8.73                          |
 | 21      | 6             | 92.54               | 0.09                        | 4.72                          |
 | 21      | 7             | 92.58               | 0.14                        | 4.58                          |
-| 21      | 8             | 96.01               | 0.13                        | 4.55                          |
+| **21**  | **8**         | **96.01**           | **0.13**                    | **4.55**                      |
 | 21      | 9             | 90.83               | 0.12                        | 4.44                          |
+
+
+## Final reconstruction network architecture results
+
+Five randomly selected EIT measurements were taken from the test data. The test data was not used throughout the training phases.
+The presented graph provides a proof of concept and shows the feasibility of reconstructing different objects within a phantom tank using a data-driven reconstruction approach.
+
+<div style="text-align: center;">
+<img src="images/predicted_test_data_results.png" alt="" width="600"/>
+</div>
