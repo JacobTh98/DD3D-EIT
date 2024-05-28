@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+title: >-
+  DD3D-EIT
+message: >-
+  If you use this repository, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Jacob Peter
+    family-names: Thönes
+    email: jacob.thoenes@uni-rostock.de
+    affiliation: Universität Rostock
+    orcid: 'https://orcid.org/0000-0003-2826-5281'
+repository-code: 'https://github.com/JacobTh98/DD3D-EIT'
+url: 'https://github.com/JacobTh98/DD3D-EIT'
+keywords:
+  - EIT
+  - 3DEIT
+  - DataDriven
+license: MIT
+version: 0.1.0
+date-released: '2024-06-01'
