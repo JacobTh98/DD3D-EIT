@@ -49,3 +49,5 @@ The presented graph provides a proof of concept and shows the feasibility of rec
 <div style="text-align: center;">
 <img src="images/predicted_test_data_results.png"/>
 </div>
+
+The top row is the true conductivity distribution $\gamma$. The lower row represents the predictions of the reconstruction model $\hat{\gamma}$.
