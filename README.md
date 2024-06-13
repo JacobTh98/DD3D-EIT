@@ -1,6 +1,6 @@
 # DD3D-EIT
 
-Three distinct networks are trained: a VAE $\mathbb{VAE}$, a mapper $\Xi$, and a material classifier $\Upsilon$.
+TwoThree networks are trained: a VAE $\mathbb{VAE}$, a mapper $\Xi$, and a material classifier $\Upsilon$.
 
 The final architecture of the reconstruction network is defined by
 
@@ -14,7 +14,7 @@ $$
 \Upsilon : \mathbf{u} \mapsto m
 $$
 
-Here, $\mathbf{u}$ represents the EIT data, and $\hat{\gamma}$ is the reconstructed conductivity in a three-dimensional domain by the final reconstruction network architecture."
+Here, $\mathbf{u}$ represents the EIT data, and $\hat{\gamma}$ is the reconstructed conductivity in a three-dimensional domain by the final reconstruction network architecture.
 
 ## Hyperparametertuning $\beta$-VAE
 
@@ -51,3 +51,9 @@ The presented graph provides a proof of concept and shows the feasibility of rec
 </div>
 
 The top row is the true conductivity distribution $\gamma$. The lower row represents the predictions of the reconstruction model $\hat{\gamma}$.
+
+### Environment
+
+To install the used Python (3.11.2) environment, use
+
+    conda env create -f environment.yml
