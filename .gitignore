@@ -1,0 +1,10 @@
+shells
+models/*
+__pycache__
+hpt_evaluation.ipynb
+hpt_vae.py
+train_mapper.py
+train_vae.py
+.ipynb_checkpoints
+measurements
+statistics.ipynb
