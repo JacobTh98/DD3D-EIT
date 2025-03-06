@@ -15,7 +15,7 @@ Please also cite:
       keywords={Electrical impedance tomography;Solid modeling;Three-dimensional displays;Inverse problems;Conductivity;Reconstruction algorithms;Market research;Robustness;Numerical models;Image reconstruction},
       doi={10.1109/EMBC53108.2024.10781524}}
 
-TwoThree networks are trained: a VAE $\mathbb{VAE}$, a mapper $\Xi$, and a material classifier $\Upsilon$.
+Three networks are trained: a VAE $\mathbb{VAE}$, a mapper $\Xi$, and a material classifier $\Upsilon$.
 
 The final architecture of the reconstruction network is defined by
 
