@@ -1,5 +1,20 @@
 # DD3D-EIT
 
+Repository for the Paper: https://ieeexplore.ieee.org/abstract/document/10781524
+
+Please also cite:
+    
+    @INPROCEEDINGS{10781524,
+      author={Thönes, Jacob and Spors, Sascha},
+      booktitle={2024 46th Annual International Conference of the IEEE Engineering in Medicine and Biology Society (EMBC)}, 
+      title={Data-Driven 3D Reconstruction for Electrical Impedance Tomography}, 
+      year={2024},
+      volume={},
+      number={},
+      pages={1-4},
+      keywords={Electrical impedance tomography;Solid modeling;Three-dimensional displays;Inverse problems;Conductivity;Reconstruction algorithms;Market research;Robustness;Numerical models;Image reconstruction},
+      doi={10.1109/EMBC53108.2024.10781524}}
+
 TwoThree networks are trained: a VAE $\mathbb{VAE}$, a mapper $\Xi$, and a material classifier $\Upsilon$.
 
 The final architecture of the reconstruction network is defined by
